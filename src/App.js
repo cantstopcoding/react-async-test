@@ -1,6 +1,5 @@
 import React from "react";
 import axios from "axios";
-import { act } from "react-dom/test-utils";
 
 const URL = "https://pokeapi.co/api/v2/pokemon/";
 
@@ -14,13 +13,9 @@ const App = () => {
     try {
       result = await axios.get(`${URL}`);
 
-      act(() => {
-        setPokemons(result.data.results);
-      });
+      setPokemons(result.data.results);
     } catch (error) {
-      act(() => {
-        setError(error);
-      });
+      setError(error);
     }
   }
 
