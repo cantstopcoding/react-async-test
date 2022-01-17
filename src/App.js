@@ -7,13 +7,13 @@ const App = () => {
   const [pokemons, setPokemons] = React.useState([]);
   const [error, setError] = React.useState(null);
 
-  async function handleFetch(event) {
-    let result;
-
+  async function handleFetch() {
     try {
-      result = await axios.get(`${URL}`);
+      const response = await fetch(`${URL}`);
 
-      setPokemons(result.data.results);
+      const result = await response.json();
+
+      setPokemons(result.results);
     } catch (error) {
       setError(error);
     }
