@@ -21,7 +21,7 @@ describe("App", () => {
 
     render(<App />);
 
-    await userEvent.click(screen.getByRole("button"));
+    userEvent.click(screen.getByRole("button")); // await taken away
 
     await act(() => promise);
 
@@ -33,7 +33,7 @@ describe("App", () => {
 
     render(<App />);
 
-    await userEvent.click(screen.getByRole("button"));
+    userEvent.click(screen.getByRole("button")); // await taken away
 
     const message = await screen.findByText(/Something went wrong/);
 
