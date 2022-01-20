@@ -1,9 +1,8 @@
-import { render, screen, act, within } from "@testing-library/react";
-// import axios from "axios";
+import { render, screen, act } from "@testing-library/react";
+
 import userEvent from "@testing-library/user-event";
 import App from "./App";
 
-// jest.mock("axios");
 
 describe("App", () => {
   test("fetches pokemons from API and display them", async () => {
@@ -13,30 +12,25 @@ describe("App", () => {
     ];
     const promise = Promise.resolve({ data: { results: pokemons } });
 
-    // axios.get.mockImplementationOnce(() => promise);
-
-    fetch = jest.fn();
-
-    fetch.mockImplementationOnce(() => promise);
+    // mockimplementationonce of fetch API to return a promise
 
     render(<App />);
+    global.fetch = jest.fn(() => promise);
 
-    // const list = screen.getByRole("list", {
-    //   name: /fruits/i,
-    // });
-    // const { getAllByRole } = within(list);
-    // const items = getAllByRole("listitem");
-    // expect(items.length).toBe(5);
-
-    await userEvent.click(screen.getByRole("button"));
-
+    userEvent.click(screen.getByRole("button"));
     await act(() => promise);
+    // const { getAllByRole } = within(list);
+    // const items = getAllByRole("listitems");
 
-    expect(screen.getAllByRole("listitem")).toHaveLength(2);
+    const list =  screen.getByRole("list");
+    screen.debug()
+    expect(list).toBeInTheDocument();
+    screen.debug()
+    expect(screen.getByRole("list")).toHaveLength(2);
   });
 
   test("fetches pokemons from an API and fails", async () => {
-    axios.get.mockImplementationOnce(() => Promise.reject(new Error()));
+    fetch.mockImplementationOnce(() => Promise.reject(new Error()));
 
     render(<App />);
 
@@ -45,5 +39,7 @@ describe("App", () => {
     const message = await screen.findByText(/Something went wrong/);
 
     expect(message).toBeInTheDocument();
+      global.fetch.mockClear()
+
   });
 });
